@@ -35,13 +35,24 @@ else
             }
         </tbody>
     </table>
+    @if(_firstRow!= null)
+    {
+        <DatePicker Date="_firstRow.Date"/>
+    }
 }
 
 @code {
+
+    [Inject]
+    private IMapper Mapper { get; set; }
+
     private WeatherForecast[]? forecasts;
+
+    private WeatherForecast? _firstRow;
 
     protected override async Task OnInitializedAsync()
     {
         forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+        _firstRow = Mapper.Map<WeatherForecast>(forecasts[0]);
     }
 }
